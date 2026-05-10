@@ -26,7 +26,7 @@ jobs:
           pip install flet pandas openpyxl
 
       - name: Build APK
-        run: flet build apk --main project.py --include-packages pandas,openpyxl
+        run: flet build apk project.py --include-packages pandas,openpyxl
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
