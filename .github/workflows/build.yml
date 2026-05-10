@@ -1,0 +1,35 @@
+name: Build Flet APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Python and dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flet pandas openpyxl
+
+      - name: Build APK
+        run: flet build apk --main project.py --include-packages pandas,openpyxl
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-flet-app
+          path: build/apk/*.apk
